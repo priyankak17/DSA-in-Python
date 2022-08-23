@@ -1,2 +1,2 @@
-# Python Web Apps
-Interactive Web App for locating volcanoes in US region
+# Python Web Mappings
+Interactive Web Map for locating volcanoes in US region
