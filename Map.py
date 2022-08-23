@@ -20,7 +20,7 @@ def color_dynamics(elevation):
         return 'red'
         
 
-#Adding title with gogle search link
+#Adding title with google search link
 html = """
 Volcano name: <br>
 <ahref="https://www.google.com/search?q=%%22%s%%22" target="_blank">%s</a><br>
