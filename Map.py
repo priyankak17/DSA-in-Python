@@ -1,5 +1,7 @@
 
 import folium   #Importing library that provides base map and functions to customize it
+#To explore folium-  dir(folium)
+#-- help(folium.Map()) eg
 import pandas
 
 #Reading coordinates file
