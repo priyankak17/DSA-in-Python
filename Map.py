@@ -1,5 +1,5 @@
 
-import folium
+import folium   #Importing library that provides base map and functions to customize it
 import pandas
 
 #Reading coordinates file
