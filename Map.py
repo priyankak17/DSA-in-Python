@@ -1,3 +1,4 @@
+
 import folium
 import pandas
 
@@ -20,7 +21,7 @@ def color_dynamics(elevation):
         return 'red'
         
 
-#Adding title with google search link
+#Adding title
 html = """
 Volcano name: <br>
 <ahref="https://www.google.com/search?q=%%22%s%%22" target="_blank">%s</a><br>
@@ -28,20 +29,29 @@ Height: %s m
 
 """
 
-map = folium.Map(location=[19,74], zoom_start=6, tiles="Stamen Terrain")
+map = folium.Map(location=[19,74], zoom_start=2.5, tiles="Stamen Terrain")
 
 #Creating a feature group to add Marker from folium objs
-fg = folium.FeatureGroup(name="My Map")
+fgv = folium.FeatureGroup(name="Volcanoes")
 
 #Customize the marker using for loop and zip function
 for lt,ln,el,name in zip(lat, lon, elv, name):   
     iframe = folium.IFrame(html = html % (name, name, el), width=200, height=100)
-    fg.add_child(folium.CircleMarker(location=[lt,ln], radius = 10, popup=folium.Popup(iframe),color = color_dynamics(el), fill=True,
+    fgv.add_child(folium.CircleMarker(location=[lt,ln], radius = 10, popup=folium.Popup(iframe),color = color_dynamics(el), fill=True,
      fill_color=color_dynamics(el), fill_opacity=1))  #circular marker
      #fg.add_child(folium.Marker(location=[lt,ln], popup=folium.Popup(iframe), icon=folium.Icon(color=color_dynamics(el))))     
      #for popup you can use : popup=folium.Popup(str(nm), parse_html=True) 
      #to display elevation in popup :  popup=str(elv)+ " m"
 
+fgp = folium.FeatureGroup(name="Population")
+#open the world.json file containing population data
+fgp.add_child(folium.GeoJson(data=open('world.json', 'r', encoding='utf-8-sig').read(),
+style_function=lambda x:{'fillColor':'green' if x['properties'] ['POP2005'] < 10000000    #Stylzing the map wrt population
+else 'orange' if 10000000 <= x['properties']['POP2005'] < 20000000 else 'red'}))
 
-map.add_child(fg)
-map.save("Map_html_popup_advanced.html")
+
+
+map.add_child(fgv)
+map.add_child(fgp)
+map.add_child(folium.LayerControl())  #Adding a control layer to switch on and off the styling layers for population and volcanoes resp.
+map.save("Layered_Mapping.html")
